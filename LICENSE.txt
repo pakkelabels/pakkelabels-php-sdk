@@ -1,0 +1,8 @@
+/*
+ * ----------------------------------------------------------------------------
+ * "THE BEER-WARE LICENSE" (Revision 42.1337):
+ * <jc@pakkelabels.dk> wrote this file. As long as you retain this notice you
+ * can do whatever you want with this stuff. If we (or any other Pakkelabelsdk team member) meet some day, and you think
+ * this stuff is worth it, you can buy me/us a beer in return Jan Christensen (on behalf of Pakkelabels.dk)
+ * ----------------------------------------------------------------------------
+ */
