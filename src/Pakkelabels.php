@@ -1,4 +1,5 @@
 <?php
+require_once('PakkelabelsException.php');
 class Pakkelabels {
     const API_ENDPOINT = 'https://app.pakkelabels.dk/api/public/v2';
     const VERSION = '1.2';
@@ -114,10 +115,9 @@ class Pakkelabels {
 
         if ($http_code != 200){
                         if(is_array($output['message'])){
-                                print_r($output['message']);
-                                die();
+				throw new PakkelabelsException(print_r($output['message'], true));
                         }else{
-                                die($output['message']);
+				throw new PakkelabelsException($output['message']);
                         }
                 }
         return $output;
