@@ -6,11 +6,11 @@ Below is a simple PHP script which illustrate the minimum amount of code needed 
 
 ```php5
 <?php
-    try {
-		$label = new Pakkelabels('api_user', 'api_key');
-    } catch (PakkelabelsException $e) {
-      echo $e->getMessage();
-    }
+try {
+    $label = new Pakkelabels('api_user', 'api_key');
+} catch (PakkelabelsException $e) {
+    echo $e->getMessage();
+}
 ?>
 ```
 
@@ -20,7 +20,7 @@ To see the current balance:
 
 ```php5
 <?php
-    echo $label->balance();
+echo $label->balance();
 ?>
 ```
 
@@ -28,8 +28,8 @@ To list all Post Danmark shipments sent to to Denmark:
 
 ```php5
 <?php
-    $labels = $label->shipments(array('shipping_agent' => 'pdk', 'receiver_country' => 'DK'));
-    print_r($labels);
+$labels = $label->shipments(array('shipping_agent' => 'pdk', 'receiver_country' => 'DK'));
+print_r($labels);
 ?>
 ```
 
@@ -37,11 +37,11 @@ To display the PDF for the shipment ID with 42 inline in the browser:
 
 ```php5
 <?php
-    $base64 = $label->pdf(42);
-    $pdf = base64_decode($base64);
-    header('Content-type: application/pdf');
-    header('Content-Disposition: inline; filename="label.pdf"');
-    echo $pdf;
+$base64 = $label->pdf(42);
+$pdf = base64_decode($base64);
+header('Content-type: application/pdf');
+header('Content-Disposition: inline; filename="label.pdf"');
+echo $pdf;
 ?>
 ```
 
@@ -49,26 +49,26 @@ To create a test shipment with Post Danmark, and then output the Track&Trace num
 
 ```php5
 <?php
-    $data = array(
-      'shipping_agent' => 'pdk',
-      'weight' => '1000',
-      'receiver_name' => 'John Doe',
-      'receiver_address1' => 'Some Street 42',
-      'receiver_zipcode' => '5230',
-      'receiver_city' => 'Odense M',
-      'receiver_country' => 'DK',
-      'sender_name' => 'John Wayne',
-      'sender_address1' => 'The Batcave 1',
-      'sender_zipcode' => '5000',
-      'sender_city' => 'Odense C',
-      'sender_country' => 'DK',
-      'shipping_product_id' => '51',
-      'services' => '11,12',
-      'test' => 'true' // Change to false when going live
-    );
+$data = array(
+  'shipping_agent' => 'pdk',
+  'weight' => '1000',
+  'receiver_name' => 'John Doe',
+  'receiver_address1' => 'Some Street 42',
+  'receiver_zipcode' => '5230',
+  'receiver_city' => 'Odense M',
+  'receiver_country' => 'DK',
+  'sender_name' => 'John Wayne',
+  'sender_address1' => 'The Batcave 1',
+  'sender_zipcode' => '5000',
+  'sender_city' => 'Odense C',
+  'sender_country' => 'DK',
+  'shipping_product_id' => '51',
+  'services' => '11,12',
+  'test' => 'true' // Change to false when going live
+);
 
-    $shipment = $label->createShipment($data);
-    echo 'Track&Trace: ' . $shipment['pkg_no'];
+$shipment = $label->create_shipment($data);
+echo 'Track&Trace: ' . $shipment['pkg_no'];
 ?>
 ```
 
@@ -79,6 +79,6 @@ To find the IDs of the products and services:
 
 ```php5
 <?php
-    print_r($label->freight_rates());
+print_r($label->freight_rates());
 ?>
 ```
