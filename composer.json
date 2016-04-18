@@ -1,0 +1,27 @@
+{
+  "name": "pakkelabels/pakkelabels-php-sdk",
+    "type": "library",
+    "description": "Official PHP-SDK to communicate with Pakkelabels.dk",
+    "homepage": "http://github.com/pakkelabels/pakkelabels-php-sdk",
+    "license": "Beerware",
+    "authors": [
+        {
+            "name": "Jan Christensen",
+            "email": "jan.christensen@pakkelabels.dk"
+        },
+        {
+            "name": "Lars Olesen",
+            "email": "lars@intraface.dk"
+        }
+    ],
+    "autoload": {
+        "files": ["src/Pakkelabels.php"]
+    },
+    "require": {
+        "php": ">=5.2.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*",
+        "squizlabs/php_codesniffer": "2.*"
+    }
+}
