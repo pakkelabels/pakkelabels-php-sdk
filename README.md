@@ -64,10 +64,12 @@ To create a test shipment with Post Danmark, and then output the Track&Trace num
       'sender_country' => 'DK',
       'shipping_product_id' => '51',
       'services' => '11,12',
+      'receiver_mobile' => '004560708090',
+      'receiver_email' => 'john@doe.com',
       'test' => 'true' // Change to false when going live
     );
 
-    $shipment = $label->createShipment($data);
+    $shipment = $label->create_shipment($data);
     echo 'Track&Trace: ' . $shipment['pkg_no'];
 ?>
 ```
