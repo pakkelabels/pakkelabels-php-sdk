@@ -79,7 +79,7 @@ class Pakkelabels {
         return $result;
     }
 
-    public function pdk_droppoints($params){
+    public function dao_droppoints($params){
         $result = $this->_make_api_call('shipments/dao_droppoints', false, $params);
         return $result;
     }
