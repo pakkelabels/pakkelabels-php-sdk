@@ -59,8 +59,8 @@ class Pakkelabels {
         return $result;
     }
 
-    public function freight_rates(){
-        $result = $this->_make_api_call('shipments/freight_rates');
+    public function freight_rates($country = null){
+        $result = $this->_make_api_call('shipments/freight_rates', false, $country ? array("country"=>$country) : array());
         return $result;
     }
 
