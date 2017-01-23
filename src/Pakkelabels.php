@@ -84,6 +84,11 @@ class Pakkelabels {
         return $result;
     }
 
+    public function pickup_points($params){
+        $result = $this->_make_api_call('pickup_points', false, $params);
+        return $result;
+    }
+
     public function getToken(){
         return $this->_token;
     }
