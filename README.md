@@ -84,3 +84,16 @@ To find the IDs of the products and services:
     print_r($label->freight_rates());
 ?>
 ```
+
+To find pickup point within a zipcode for a certain shipping agent
+
+```php5
+<?php
+    $data = array(
+      'agent' => 'pdk',
+      'zipcode' => '5240',
+      'country' => 'DK',
+    );
+    print_r($label->pickup_points($data));
+?>
+```
