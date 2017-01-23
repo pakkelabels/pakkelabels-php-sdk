@@ -85,7 +85,7 @@ To find the IDs of the products and services:
 ?>
 ```
 
-To find pickup point within a zipcode for a certain shipping agent
+To find pickup point within a zipcode for a certain shipping agent:
 
 ```php5
 <?php
