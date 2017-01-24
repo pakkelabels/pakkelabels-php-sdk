@@ -81,7 +81,10 @@ To find the IDs of the products and services:
 
 ```php5
 <?php
-    print_r($label->freight_rates());
+    $data = array(
+      'country' => 'DK',
+    );
+    print_r($label->freight_rates($data));
 ?>
 ```
 
