@@ -108,11 +108,16 @@ class Pakkelabels {
         $params['token'] = $this->_token;
         $params['user_agent'] = 'pdk_php_library v' . self::VERSION;
 
-        $query = http_build_query($params);    
+        $query = json_encode($params);
+
         if ($doPost){
             curl_setopt($ch, CURLOPT_URL, self::API_ENDPOINT . '/' . $method);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($query))
+            );
         } else {
             curl_setopt($ch, CURLOPT_URL, self::API_ENDPOINT . '/' . $method . '?' . $query);
         }
