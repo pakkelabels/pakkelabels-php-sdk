@@ -108,9 +108,8 @@ class Pakkelabels {
         $params['token'] = $this->_token;
         $params['user_agent'] = 'pdk_php_library v' . self::VERSION;
 
-        $query = json_encode($params);
-
         if ($doPost){
+            $query = json_encode($params);
             curl_setopt($ch, CURLOPT_URL, self::API_ENDPOINT . '/' . $method);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
@@ -119,6 +118,7 @@ class Pakkelabels {
                 'Content-Length: ' . strlen($query))
             );
         } else {
+            $query = http_build_query($params);
             curl_setopt($ch, CURLOPT_URL, self::API_ENDPOINT . '/' . $method . '?' . $query);
         }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -129,12 +129,12 @@ class Pakkelabels {
         $output = json_decode($output, true);
 
         if ($http_code != 200){
-                        if(is_array($output['message'])){
-				throw new PakkelabelsException(print_r($output['message'], true));
-                        }else{
-				throw new PakkelabelsException($output['message']);
-                        }
-                }
+            if(is_array($output['message'])){
+    			throw new PakkelabelsException(print_r($output['message'], true));
+            }else{
+    			throw new PakkelabelsException($output['message']);
+            }
+        }
         return $output;
     }
 }
