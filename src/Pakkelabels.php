@@ -14,7 +14,7 @@ class Pakkelabels {
 
     public function balance(){
         $result = $this->_make_api_call('/account/balance');
-        return $result['balance'];
+        return $result;
     }
     
     private function _make_api_call($method, $doPost = false,$params = array()){
