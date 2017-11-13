@@ -1,113 +1,26 @@
 <?php
 require_once('PakkelabelsException.php');
 class Pakkelabels {
-    const API_ENDPOINT = 'https://app.pakkelabels.dk/api/public/v2';
-    const VERSION = '1.2';
+    const API_ENDPOINT = 'https://app.pakkelabels.dk/api/public/v3';
+    const VERSION = '3.0';
 
     private $_api_user;
     private $_api_key;
-    private $_token;
 
     public function __construct($api_user, $api_key){
         $this->_api_user = $api_user;
         $this->_api_key = $api_key;
-        $this->login();
-    }
-
-    private function login(){
-        $result = $this->_make_api_call('users/login', true, array('api_user' => $this->_api_user, 'api_key' => $this->_api_key));
-        $this->_token = $result['token'];
     }
 
     public function balance(){
-        $result = $this->_make_api_call('users/balance');
+        $result = $this->_make_api_call('/account/balance');
         return $result['balance'];
-    }
-
-    public function pdf($id){
-        $result = $this->_make_api_call('shipments/pdf', false, array('id' => $id));
-        return $result['base64'];
-    }
-
-    public function zpl($id){
-        $result = $this->_make_api_call('shipments/zpl', false, array('id' => $id));
-        return $result['base64'];
-    }
-    
-    public function shipments($params = array()){
-        $result = $this->_make_api_call('shipments/shipments', false, $params);
-        return $result;
-    }
-    
-    public function imported_shipments($params = array()){
-        $result = $this->_make_api_call('shipments/imported_shipments', false, $params);
-        return $result;
-    }
-
-    public function create_imported_shipment($params){
-        $result = $this->_make_api_call('shipments/imported_shipment', true, $params);
-        return $result;
-    }
-    
-    public function create_shipment($params){
-        $result = $this->_make_api_call('shipments/shipment', true, $params);
-        return $result;
-    }
-
-    public function create_shipment_own_customer_number($params){
-        $result = $this->_make_api_call('shipments/shipment_own_customer_number', true, $params);
-        return $result;
-    }
-
-    public function freight_rates($params){
-        $result = $this->_make_api_call('shipments/freight_rates', false, $params);
-        return $result;
-    }
-
-    public function payment_requests(){
-        $result = $this->_make_api_call('users/payment_requests');
-        return $result;
-    }
-
-    public function gls_droppoints($params){
-        $result = $this->_make_api_call('shipments/gls_droppoints', false, $params);
-        return $result;
-    }
-
-    public function pdk_droppoints($params){
-        $result = $this->_make_api_call('shipments/pdk_droppoints', false, $params);
-        return $result;
-    }
-
-    public function dao_droppoints($params){
-        $result = $this->_make_api_call('shipments/dao_droppoints', false, $params);
-        return $result;
-    }
-
-    public function pickup_points($params){
-        $result = $this->_make_api_call('pickup_points', false, $params);
-        return $result;
-    }
-
-    public function getToken(){
-        return $this->_token;
-    }
-
-    public function add_to_print_queue($shipments){
-        $result = $this->_make_api_call('shipments/add_to_print_queue', true, array('ids' => implode(',', $shipments)));
-        return $result;    
-    }
-
-    public function pdf_multiple($shipments){
-        $result = $this->_make_api_call('shipments/pdf_multiple', false, array('ids' => implode(',', $shipments)));
-        return $result;
     }
     
     private function _make_api_call($method, $doPost = false,$params = array()){
         $ch = curl_init();
-        $params['token'] = $this->_token;
+        curl_setopt($ch, CURLOPT_USERPWD, $this->_api_user . ":" . $this->_api_key);
         $params['user_agent'] = 'pdk_php_library v' . self::VERSION;
-
         if ($doPost){
             $query = json_encode($params);
             curl_setopt($ch, CURLOPT_URL, self::API_ENDPOINT . '/' . $method);
