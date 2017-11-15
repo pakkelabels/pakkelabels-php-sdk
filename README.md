@@ -22,7 +22,7 @@ Below is a simple PHP script which illustrate the minimum amount of code needed 
 
 Once the $client object is created, you can begin to use the API. Following are some examples for how to utilize the SDK.
 
-Get current balance:
+### Get current balance:
 
 ```php5
 <?php
@@ -137,9 +137,11 @@ Create shipment:
       "mobile"=> "50607080",
       "instruction"=> null
     ),
-    "parcels" => array(array(
+    "parcels" => array(
+      array(
       "weight" => 1000
-    )),
+      )
+    ),
   );
   echo $client->create_shipment($params);
 ?>
@@ -188,3 +190,4 @@ Get return shipments for return portal (pagination is supported):
   echo $client->return_portal_shipments($return_portal_id, $params);  
 ?>
 ```
+
