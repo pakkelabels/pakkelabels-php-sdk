@@ -20,7 +20,8 @@ Below is a simple PHP script which illustrate the minimum amount of code needed 
 ?>
 ```
 
-Once the $client object is created, you can begin to use the API. Following are some examples for how to utilize the SDK.
+Once the $client object is created, you can begin to use the API.
+Following are some examples for how to utilize the SDK.
 
 ### Get current balance:
 
