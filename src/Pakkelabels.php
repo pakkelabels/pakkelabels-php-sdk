@@ -1,141 +1,204 @@
 <?php
 require_once('PakkelabelsException.php');
 class Pakkelabels {
-    const API_ENDPOINT = 'https://app.pakkelabels.dk/api/public/v2';
-    const VERSION = '1.2';
+  const API_ENDPOINT = 'https://app.pakkelabels.dk/api/public/v3';
+  const VERSION = '3.0';
 
-    private $_api_user;
-    private $_api_key;
-    private $_token;
+  private $_api_user;
+  private $_api_key;
 
-    public function __construct($api_user, $api_key){
-        $this->_api_user = $api_user;
-        $this->_api_key = $api_key;
-        $this->login();
+  public function __construct($api_user, $api_key, $api_base_path=self::API_ENDPOINT){
+    $this->_api_user = $api_user;
+    $this->_api_key = $api_key;
+    $this->_api_base_path = $api_base_path;
+  }
+
+  public function account_balance(){
+    $result = $this->_make_api_call('/account/balance');
+    return $result;
+  }
+
+  public function account_payment_requests($params){
+    $result = $this->_make_api_call('/account/payment_requests', 'GET', $params);
+    return $result;
+  }
+
+  public function products($params){
+    $result = $this->_make_api_call('/products', 'GET', $params);
+    return $result;
+  }
+
+  public function pickup_points($params){
+    $result = $this->_make_api_call('/pickup_points', 'GET', $params);
+    return $result;
+  }
+
+  public function shipment_monitor_statuses($params){
+    $result = $this->_make_api_call('/shipment_monitor_statuses', 'GET', $params);
+    return $result;
+  }  
+
+  public function return_portals($params){
+    $result = $this->_make_api_call('/return_portals', 'GET', $params);
+    return $result;
+  }  
+  
+  public function return_portal($id){
+    $result = $this->_make_api_call('/return_portals/' . $id);
+    return $result;
+  }
+
+  public function return_portal_shipments($return_portal_id, $params){
+    $result = $this->_make_api_call('/return_portals/' . $return_portal_id . '/shipments');
+    return $result;
+  }
+
+  public function shipments($params){
+    $result = $this->_make_api_call('/shipments', 'GET', $params);
+    return $result;
+  }
+
+  public function shipment($id){
+    $result = $this->_make_api_call('/shipments/' . $id);
+    return $result;
+  }
+
+  public function shipment_labels($id, $params){
+    $result = $this->_make_api_call('/shipments/' . $id . '/labels', 'GET', $params);
+    return $result;
+  }
+
+  public function create_shipment($params){
+    $result = $this->_make_api_call('/shipments', 'POST', $params);
+    return $result;
+  }
+
+  public function print_queue_entries($params){
+    $result = $this->_make_api_call('/print_queue_entries', 'GET', $params);
+    return $result;
+  }  
+
+  public function imported_shipments($params){
+    $result = $this->_make_api_call('/imported_shipments', 'GET', $params);
+    return $result;
+  }
+
+  public function imported_shipment($id){
+    $result = $this->_make_api_call('/imported_shipments/' . $id);
+    return $result;
+  }
+
+  public function create_imported_shipment($params){
+    $result = $this->_make_api_call('/imported_shipments', 'POST', $params);
+    return $result;
+  }
+
+  public function update_imported_shipment($id, $params){
+    $result = $this->_make_api_call('/imported_shipments/'. $id, 'PUT', $params);
+    return $result;
+  }
+
+  public function delete_imported_shipment($id){
+    $result = $this->_make_api_call('/imported_shipments/'. $id, 'DELETE');
+    return $result;
+  }
+
+  public function labels($params){
+    $result = $this->_make_api_call('/labels/', 'GET', $params);
+    return $result;
+  }
+  
+  private function _make_api_call($path, $method = 'GET',$params = array()){
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_USERPWD, $this->_api_user . ":" . $this->_api_key);
+    $params['user_agent'] = 'pdk_php_library v' . self::VERSION;
+
+    switch ($method) {
+    case 'GET':
+      $query = http_build_query($params);
+      curl_setopt($ch, CURLOPT_URL, $this->_api_base_path . '/' . $path . '?' . $query);
+      break;
+    case 'POST':
+      $query = json_encode($params);
+      curl_setopt($ch, CURLOPT_URL, $this->_api_base_path . '/' . $path);
+      curl_setopt($ch, CURLOPT_POST, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          'Content-Type: application/json',
+          'Content-Length: ' . strlen($query))
+      );
+      break;
+    case 'PUT':
+      $query = json_encode($params);
+      curl_setopt($ch, CURLOPT_URL, $this->_api_base_path . '/' . $path);
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          'Content-Type: application/json',
+          'Content-Length: ' . strlen($query))
+      );
+      break;
+    case 'DELETE':
+      $query = http_build_query($params);
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE'); 
+      curl_setopt($ch, CURLOPT_URL, $this->_api_base_path . '/' . $path . '?' . $query);
+      break;
     }
 
-    private function login(){
-        $result = $this->_make_api_call('users/login', true, array('api_user' => $this->_api_user, 'api_key' => $this->_api_key));
-        $this->_token = $result['token'];
-    }
+    $headers = [];
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    public function balance(){
-        $result = $this->_make_api_call('users/balance');
-        return $result['balance'];
-    }
+    // this function is called by curl for each header received
+    curl_setopt($ch, CURLOPT_HEADERFUNCTION,
+      function($curl, $header) use (&$headers)
+      {
+        $len = strlen($header);
+        $header = explode(':', $header, 2);
+        if (count($header) < 2) // ignore invalid headers
+          return $len;
 
-    public function pdf($id){
-        $result = $this->_make_api_call('shipments/pdf', false, array('id' => $id));
-        return $result['base64'];
-    }
+        $name = strtolower(trim($header[0]));
+        if (!array_key_exists($name, $headers))
+          $headers[$name] = [trim($header[1])];
+        else
+          $headers[$name][] = trim($header[1]);
+        return $len;
+      }
+    );
 
-    public function zpl($id){
-        $result = $this->_make_api_call('shipments/zpl', false, array('id' => $id));
-        return $result['base64'];
-    }
+    $output = curl_exec($ch);
+    $http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE);
+    $output = json_decode($output, true);
     
-    public function shipments($params = array()){
-        $result = $this->_make_api_call('shipments/shipments', false, $params);
-        return $result;
-    }
+     curl_close($ch);
     
-    public function imported_shipments($params = array()){
-        $result = $this->_make_api_call('shipments/imported_shipments', false, $params);
-        return $result;
+    if ($http_code != 200){
+    throw new PakkelabelsException($output['error']);
     }
 
-    public function create_imported_shipment($params){
-        $result = $this->_make_api_call('shipments/imported_shipment', true, $params);
-        return $result;
-    }
+    $pagination = $this->_extract_pagination($headers);
+
+    $output = array(
+      'output' => $output,
+      'pagination' => $pagination
+    );
+
+    return $output;
+  }
+
+  private function _extract_pagination($headers) {
     
-    public function create_shipment($params){
-        $result = $this->_make_api_call('shipments/shipment', true, $params);
-        return $result;
+    $arr = array('x-per-page', 'x-current-page', 'x-total-count', 'x-total-pages');
+    $pagination = array();
+    foreach ($arr as &$key) {
+      if (array_key_exists($key, $headers)) {
+        $pagination[$key] = $headers[$key][0];
+      } else {
+        return $pagination;
+      }
     }
+    return $pagination;
+  }
 
-    public function create_shipment_own_customer_number($params){
-        $result = $this->_make_api_call('shipments/shipment_own_customer_number', true, $params);
-        return $result;
-    }
-
-    public function freight_rates($params){
-        $result = $this->_make_api_call('shipments/freight_rates', false, $params);
-        return $result;
-    }
-
-    public function payment_requests(){
-        $result = $this->_make_api_call('users/payment_requests');
-        return $result;
-    }
-
-    public function gls_droppoints($params){
-        $result = $this->_make_api_call('shipments/gls_droppoints', false, $params);
-        return $result;
-    }
-
-    public function pdk_droppoints($params){
-        $result = $this->_make_api_call('shipments/pdk_droppoints', false, $params);
-        return $result;
-    }
-
-    public function dao_droppoints($params){
-        $result = $this->_make_api_call('shipments/dao_droppoints', false, $params);
-        return $result;
-    }
-
-    public function pickup_points($params){
-        $result = $this->_make_api_call('pickup_points', false, $params);
-        return $result;
-    }
-
-    public function getToken(){
-        return $this->_token;
-    }
-
-    public function add_to_print_queue($shipments){
-        $result = $this->_make_api_call('shipments/add_to_print_queue', true, array('ids' => implode(',', $shipments)));
-        return $result;    
-    }
-
-    public function pdf_multiple($shipments){
-        $result = $this->_make_api_call('shipments/pdf_multiple', false, array('ids' => implode(',', $shipments)));
-        return $result;
-    }
-    
-    private function _make_api_call($method, $doPost = false,$params = array()){
-        $ch = curl_init();
-        $params['token'] = $this->_token;
-        $params['user_agent'] = 'pdk_php_library v' . self::VERSION;
-
-        if ($doPost){
-            $query = json_encode($params);
-            curl_setopt($ch, CURLOPT_URL, self::API_ENDPOINT . '/' . $method);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($query))
-            );
-        } else {
-            $query = http_build_query($params);
-            curl_setopt($ch, CURLOPT_URL, self::API_ENDPOINT . '/' . $method . '?' . $query);
-        }
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        $output = curl_exec($ch);
-        $http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE);
-        curl_close ($ch);
-        $output = json_decode($output, true);
-
-        if ($http_code != 200){
-            if(is_array($output['message'])){
-    			throw new PakkelabelsException(print_r($output['message'], true));
-            }else{
-    			throw new PakkelabelsException($output['message']);
-            }
-        }
-        return $output;
-    }
 }
 ?>
