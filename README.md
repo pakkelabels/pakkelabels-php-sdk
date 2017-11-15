@@ -4,7 +4,7 @@ This SDK supports Pakkelabels.dk API v3.
 
 Specification: https://app.pakkelabels.dk/api/public/v3/specification
 
-The previous SDK supporting Pakkelabels.dk API v2 can be found under the branch 'for_api_v2'
+The previous SDK supporting Pakkelabels.dk API v2 can be found under the branch **for_api_v2**
 
 ## Getting started
 
@@ -13,7 +13,7 @@ Below is a simple PHP script which illustrate the minimum amount of code needed 
 ```php5
 <?php
   try {
-	  $client = new Pakkelabels('api_user', 'api_key');
+    $client = new Pakkelabels('api_user', 'api_key');
   } catch (PakkelabelsException $e) {
     echo $e->getMessage();
   }
@@ -21,18 +21,15 @@ Below is a simple PHP script which illustrate the minimum amount of code needed 
 ```
 
 Once the $client object is created, you can begin to use the API.
-Following are some examples for how to utilize the SDK.
 
-### Get current balance:
-
+## Examples
+#### Get current balance
 ```php5
 <?php
   echo $client->account_balance();
 ?>
 ```
-
-Get outstanding payment requests:
-
+#### Get outstanding payment requests
 ```php5
 <?php
   $params = array(
@@ -42,9 +39,7 @@ Get outstanding payment requests:
   echo $client->account_payment_requests($params);
 ?>
 ```
-
-Get available products (pagination is supported):
-
+#### Get available products
 ```php5
 <?php
   $params = array(
@@ -55,9 +50,9 @@ Get available products (pagination is supported):
   echo $client->products($params);
 ?>
 ```
+Pagination is supported
 
-Get available / nearest pickup points:
-
+#### Get available / nearest pickup points
 ```php5
 <?php
   $params = array(
@@ -68,10 +63,7 @@ Get available / nearest pickup points:
   echo $client->pickup_points($params);
 ?>
 ```
-
-
-Get shipments (pagination is supported):
-
+#### Get shipments
 ```php5
 <?php
   $params = array(
@@ -81,18 +73,16 @@ Get shipments (pagination is supported):
   echo $client->shipments($params);
 ?>
 ```
+Pagination is supported
 
-Get shipment by id:
-
+#### Get shipment by id:
 ```php5
 <?php
   $id = 5545625;
   echo $client->shipment($id);  
 ?>
 ```
-
-Get label(s) for shipment:
-
+#### Get label(s) for shipment
 ```php5
 <?php
   $shipment_id = 5545625;
@@ -102,41 +92,39 @@ Get label(s) for shipment:
   echo $client->shipment_labels($shipment_id, $params);  
 ?>
 ```
-
-Create shipment: 
-
+#### Create shipment
 ```php5
 <?php
   $params = array(
     "test_mode" => true,
-    "own_agreement"=> true,
-    "label_format"=> "a4_pdf",
-    "product_code"=> "GLSDK_HD",
-    "service_codes"=> "EMAIL_NT,SMS_NT",
+    "own_agreement" => true,
+    "label_format" => "a4_pdf",
+    "product_code" => "GLSDK_HD",
+    "service_codes" => "EMAIL_NT,SMS_NT",
     "sender" => array(
-      "name"=> "Pakkelabels.dk ApS",
-      "address1"=> "Strandvejen 6",
-      "address2"=> null,
-      "country_code"=> "DK",
-      "zipcode"=> "5240",
-      "city"=> "Odense NØ",
+      "name" => "Pakkelabels.dk ApS",
+      "address1" => "Strandvejen 6",
+      "address2" => null,
+      "country_code" => "DK",
+      "zipcode" => "5240",
+      "city" => "Odense NØ",
       "attention" => null,
-      "email"=> "firma@email.dk",
-      "telephone"=> "70400407",
-      "mobile"=> "70400407"       
+      "email" => "firma@email.dk",
+      "telephone" => "70400407",
+      "mobile" => "70400407"       
     ),
     "receiver" => array(
-      "name"=> "Lene Jensen",
-      "address1"=> "Vindegade 112",
-      "address2"=> null,
-      "country_code"=> "DK",
-      "zipcode"=> "5000",
-      "city"=> "Odense C",
-      "attention"=> null,
-      "email"=> "lene@email.dk",
-      "telephone"=> "50607080",
-      "mobile"=> "50607080",
-      "instruction"=> null
+      "name" => "Lene Jensen",
+      "address1" => "Vindegade 112",
+      "address2" => null,
+      "country_code" => "DK",
+      "zipcode" => "5000",
+      "city" => "Odense C",
+      "attention" => null,
+      "email" => "lene@email.dk",
+      "telephone" => "50607080",
+      "mobile" => "50607080",
+      "instruction" => null
     ),
     "parcels" => array(
       array(
@@ -147,9 +135,7 @@ Create shipment:
   echo $client->create_shipment($params);
 ?>
 ```
-
-Get shipment monitor statuses:
-
+#### Get shipment monitor statuses
 ```php5
 <?php
   $params = array(
@@ -159,9 +145,16 @@ Get shipment monitor statuses:
   echo $client->shipment_monitor_statuses($params);  
 ?>
 ```
-
-Get return portals:
-
+#### Get print queue entries
+```php5
+<?php
+  $params = array(
+    'page' => 1
+  );
+  echo print_r($client->print_queue_entries($params);
+?>
+```
+#### Get return portals
 ```php5
 <?php
   $params = array(
@@ -170,18 +163,14 @@ Get return portals:
   echo $client->return_portals($params);  
 ?>
 ```
-
-Get return portal by id:
-
+#### Get return portal by id
 ```php5
 <?php
   $id = 4766;
   echo $client->return_portal($id);  
 ?>
 ```
-
-Get return shipments for return portal (pagination is supported):
-
+#### Get return shipments for return portal
 ```php5
 <?php
   $return_portal_id = 4766;
@@ -191,4 +180,101 @@ Get return shipments for return portal (pagination is supported):
   echo $client->return_portal_shipments($return_portal_id, $params);  
 ?>
 ```
-
+Pagination is supported
+#### Get imported shipments
+```php5
+<?php
+  $params = array(
+    'page' => 1
+  );
+  echo $client->imported_shipments($params);
+?>
+```
+Pagination is supported
+#### Get imported shipment by id:
+```php5
+<?php
+  $id = 75545625;
+  echo $client->imported_shipment($id);
+?>
+```
+#### Create imported shipment
+```php5
+<?php
+  $params = array(
+    "carrier_code" => "gls",
+    "product_code" => "GLSDK_HD",
+    "service_codes" => "EMAIL_NT,SMS_NT",
+    "sender" => array(
+      "name" => "Pakkelabels.dk ApS",
+      "address1" => "Strandvejen 6",
+      "address2" => null,
+      "country_code" => "DK",
+      "zipcode" => "5240",
+      "city" => "Odense NØ",
+      "attention" => null,
+      "email" => "firma@email.dk",
+      "telephone" => "70400407",
+      "mobile" => "70400407"       
+    ),
+    "receiver" => array(
+      "name" => "Lene Jensen",
+      "address1" => "Vindegade 112",
+      "address2" => null,
+      "country_code" => "DK",
+      "zipcode" => "5000",
+      "city" => "Odense C",
+      "attention" => null,
+      "email" => "lene@email.dk",
+      "telephone" => "50607080",
+      "mobile" => "50607080",
+      "instruction" => null
+    )
+  );
+  echo $client->create_imported_shipment($params);
+?>
+```
+#### Update imported shipment by id
+```php5
+<?php
+  $id = 75545625;
+  $params = array(
+    "carrier_code" => "gls",
+    "product_code" => "GLSDK_HD",
+    "service_codes" => "EMAIL_NT,SMS_NT",
+    "sender" => array(
+      "name" => "Pakkelabels.dk ApS",
+      "address1" => "Strandvejen 6",
+      "address2" => null,
+      "country_code" => "DK",
+      "zipcode" => "5240",
+      "city" => "Odense NØ",
+      "attention" => null,
+      "email" => "firma@email.dk",
+      "telephone" => "70400407",
+      "mobile" => "70400407"       
+    ),
+    "receiver" => array(
+      "name" => "Lene Jensen",
+      "address1" => "Vindegade 112",
+      "address2" => null,
+      "country_code" => "DK",
+      "zipcode" => "5000",
+      "city" => "Odense C",
+      "attention" => null,
+      "email" => "lene@email.dk",
+      "telephone" => "50607080",
+      "mobile" => "50607080",
+      "instruction" => null
+    )
+  );
+  echo $client->update_imported_shipment($id, $params);
+?>
+```
+#### Delete/archive an imported shipment by id
+```php5
+<?php
+  $id = 75545625;
+  echo $client->delete_imported_shipment($id);
+?>
+```
