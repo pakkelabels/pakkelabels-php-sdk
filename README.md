@@ -193,7 +193,7 @@ Pagination is supported
 ?>
 ```
 Pagination is supported
-#### Get imported shipment by id:
+#### Get imported shipment by id
 ```php5
 <?php
   $id = 75545625;
