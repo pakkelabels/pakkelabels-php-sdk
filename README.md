@@ -101,6 +101,8 @@ Pagination is supported
     "label_format" => "a4_pdf",
     "product_code" => "GLSDK_HD",
     "service_codes" => "EMAIL_NT,SMS_NT",
+    "order_id" => "10001",
+    "reference" => "Webshop 10001",
     "sender" => array(
       "name" => "Pakkelabels.dk ApS",
       "address1" => "Strandvejen 6",
@@ -205,6 +207,8 @@ Pagination is supported
     "carrier_code" => "gls",
     "product_code" => "GLSDK_HD",
     "service_codes" => "EMAIL_NT,SMS_NT",
+    "order_id" => "10001",
+    "reference" => "Webshop 10001",
     "sender" => array(
       "name" => "Pakkelabels.dk ApS",
       "address1" => "Strandvejen 6",
@@ -242,6 +246,8 @@ Pagination is supported
     "carrier_code" => "gls",
     "product_code" => "GLSDK_HD",
     "service_codes" => "EMAIL_NT,SMS_NT",
+    "order_id" => "10001",
+    "reference" => "Webshop 10001",
     "sender" => array(
       "name" => "Pakkelabels.dk ApS",
       "address1" => "Strandvejen 6",
