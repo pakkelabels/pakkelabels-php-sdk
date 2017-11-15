@@ -1,102 +1,190 @@
 # Pakkelabels.dk's official PHP library
 
+This SDK supports Pakkelabels.dk API v3.
+
+Specification: https://app.pakkelabels.dk/api/public/v3/specification
+
+The previous SDK supporting Pakkelabels.dk API v2 can be found under the branch 'for_api_v2'
+
 ## Getting started
 
 Below is a simple PHP script which illustrate the minimum amount of code needed to getting started.
 
 ```php5
 <?php
-    try {
-		$label = new Pakkelabels('api_user', 'api_key');
-    } catch (PakkelabelsException $e) {
-      echo $e->getMessage();
-    }
+  try {
+	  $client = new Pakkelabels('api_user', 'api_key');
+  } catch (PakkelabelsException $e) {
+    echo $e->getMessage();
+  }
 ?>
 ```
 
-Once the $label object is created, you can begin to use the API.
+Once the $client object is created, you can begin to use the API. Following are some examples for how to utilize the SDK.
 
-To see the current balance:
+Get current balance:
 
 ```php5
 <?php
-    echo $label->balance();
+  echo $client->account_balance();
 ?>
 ```
 
-To list all Post Danmark shipments sent to to Denmark:
+Get outstanding payment requests:
 
 ```php5
 <?php
-    $labels = $label->shipments(array('shipping_agent' => 'pdk', 'receiver_country' => 'DK'));
-    print_r($labels);
+  $params = array(
+    'created_at_min' => '2017-06-19',
+    'page' => 1
+  );
+  echo $client->account_payment_requests($params);
 ?>
 ```
 
-To display the PDF for the shipment ID with 42 inline in the browser:
+Get available products (pagination is supported):
 
 ```php5
 <?php
-    $base64 = $label->pdf(42);
-    $pdf = base64_decode($base64);
-    header('Content-type: application/pdf');
-    header('Content-Disposition: inline; filename="label.pdf"');
-    echo $pdf;
+  $params = array(
+    'country_code' => 'DK',
+    'carrier_code' => 'gls',
+    'page' => 1
+  );
+  echo $client->products($params);
 ?>
 ```
 
-To create a test shipment with Post Danmark, and then output the Track&Trace number of the newly created shipment:
+Get available / nearest pickup points:
 
 ```php5
 <?php
-    $data = array(
-      'shipping_agent' => 'pdk',
-      'weight' => '1000',
-      'receiver_name' => 'John Doe',
-      'receiver_address1' => 'Some Street 42',
-      'receiver_zipcode' => '5230',
-      'receiver_city' => 'Odense M',
-      'receiver_country' => 'DK',
-      'sender_name' => 'John Wayne',
-      'sender_address1' => 'The Batcave 1',
-      'sender_zipcode' => '5000',
-      'sender_city' => 'Odense C',
-      'sender_country' => 'DK',
-      'shipping_product_id' => '51',
-      'services' => '11,12',
-      'receiver_mobile' => '004560708090',
-      'receiver_email' => 'john@doe.com',
-      'test' => 'true' // Change to false when going live
-    );
-
-    $shipment = $label->create_shipment($data);
-    echo 'Track&Trace: ' . $shipment['pkg_no'];
+  $params = array(
+    'country_code' => 'DK',
+    'carrier_code' => 'gls',
+    'zipcode' => '5000'
+  );
+  echo $client->pickup_points($params);
 ?>
 ```
 
-You’ll notice that we supply a shipping_product_id and a list of services. In this case, 51 is the ID of “Privatpakke u. omdeling” (without delivery)
-The service with ID 11 is email notification, and 12 is sms notification.
 
-To find the IDs of the products and services:
+Get shipments (pagination is supported):
 
 ```php5
 <?php
-    $data = array(
-      'country' => 'DK',
-    );
-    print_r($label->freight_rates($data));
+  $params = array(
+    'page' => 1,
+    'carrier_code' => 'dao'
+  );
+  echo $client->shipments($params);
 ?>
 ```
 
-To find pickup point within a zipcode for a certain shipping agent:
+Get shipment by id:
 
 ```php5
 <?php
-    $data = array(
-      'agent' => 'pdk',
-      'zipcode' => '5240',
-      'country' => 'DK',
-    );
-    print_r($label->pickup_points($data));
+  $id = 5545625;
+  echo $client->shipment($id);  
+?>
+```
+
+Get label(s) for shipment:
+
+```php5
+<?php
+  $shipment_id = 5545625;
+  $params = array(
+    'label_format' => '10x19_pdf'
+  );
+  echo $client->shipment_labels($shipment_id, $params);  
+?>
+```
+
+Create shipment: 
+
+```php5
+<?php
+  $params = array(
+    "test_mode" => true,
+    "own_agreement"=> true,
+    "label_format"=> "a4_pdf",
+    "product_code"=> "GLSDK_HD",
+    "service_codes"=> "EMAIL_NT,SMS_NT",
+    "sender" => array(
+      "name"=> "Pakkelabels.dk ApS",
+      "address1"=> "Strandvejen 6",
+      "address2"=> null,
+      "country_code"=> "DK",
+      "zipcode"=> "5240",
+      "city"=> "Odense NØ",
+      "attention" => null,
+      "email"=> "firma@email.dk",
+      "telephone"=> "70400407",
+      "mobile"=> "70400407"       
+    ),
+    "receiver" => array(
+      "name"=> "Lene Jensen",
+      "address1"=> "Vindegade 112",
+      "address2"=> null,
+      "country_code"=> "DK",
+      "zipcode"=> "5000",
+      "city"=> "Odense C",
+      "attention"=> null,
+      "email"=> "lene@email.dk",
+      "telephone"=> "50607080",
+      "mobile"=> "50607080",
+      "instruction"=> null
+    ),
+    "parcels" => array(array(
+      "weight" => 1000
+    )),
+  );
+  echo $client->create_shipment($params);
+?>
+```
+
+Get shipment monitor statuses:
+
+```php5
+<?php
+  $params = array(
+    'ids' => '5546689,5546696',
+    'page' => 1
+  );
+  echo $client->shipment_monitor_statuses($params);  
+?>
+```
+
+Get return portals:
+
+```php5
+<?php
+  $params = array(
+    'page' => 1
+  );
+  echo $client->return_portals($params);  
+?>
+```
+
+Get return portal by id:
+
+```php5
+<?php
+  $id = 4766;
+  echo $client->return_portal($id);  
+?>
+```
+
+Get return shipments for return portal (pagination is supported):
+
+```php5
+<?php
+  $return_portal_id = 4766;
+  $params = array(
+    'page' => 1
+  );
+  echo $client->return_portal_shipments($return_portal_id, $params);  
 ?>
 ```
