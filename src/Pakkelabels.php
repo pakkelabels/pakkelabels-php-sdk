@@ -1,5 +1,6 @@
 <?php
-require_once('PakkelabelsException.php');
+namespace Pakkelabels;
+
 class Pakkelabels {
   const API_ENDPOINT = 'https://app.pakkelabels.dk/api/public/v3';
   const VERSION = '3.0';
@@ -36,13 +37,13 @@ class Pakkelabels {
   public function shipment_monitor_statuses($params){
     $result = $this->_make_api_call('/shipment_monitor_statuses', 'GET', $params);
     return $result;
-  }  
+  }
 
   public function return_portals($params){
     $result = $this->_make_api_call('/return_portals', 'GET', $params);
     return $result;
-  }  
-  
+  }
+
   public function return_portal($id){
     $result = $this->_make_api_call('/return_portals/' . $id);
     return $result;
@@ -76,7 +77,7 @@ class Pakkelabels {
   public function print_queue_entries($params){
     $result = $this->_make_api_call('/print_queue_entries', 'GET', $params);
     return $result;
-  }  
+  }
 
   public function imported_shipments($params){
     $result = $this->_make_api_call('/imported_shipments', 'GET', $params);
@@ -107,7 +108,7 @@ class Pakkelabels {
     $result = $this->_make_api_call('/labels/', 'GET', $params);
     return $result;
   }
-  
+
   private function _make_api_call($path, $method = 'GET',$params = array()){
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_USERPWD, $this->_api_user . ":" . $this->_api_key);
@@ -140,7 +141,7 @@ class Pakkelabels {
       break;
     case 'DELETE':
       $query = http_build_query($params);
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE'); 
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
       curl_setopt($ch, CURLOPT_URL, $this->_api_base_path . '/' . $path . '?' . $query);
       break;
     }
@@ -169,9 +170,9 @@ class Pakkelabels {
     $output = curl_exec($ch);
     $http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE);
     $output = json_decode($output, true);
-    
+
      curl_close($ch);
-    
+
     if ($http_code != 200){
     throw new PakkelabelsException($output['error']);
     }
@@ -187,7 +188,7 @@ class Pakkelabels {
   }
 
   private function _extract_pagination($headers) {
-    
+
     $arr = array('x-per-page', 'x-current-page', 'x-total-count', 'x-total-pages');
     $pagination = array();
     foreach ($arr as &$key) {
