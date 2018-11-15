@@ -1,6 +1,5 @@
 {
     "name": "pakkelabels/pakkelabels-php-sdk",
-    "version": "3.0.0",
     "description": "Pakkelabels.dk's official PHP library",
     "type": "library",
     "minimum-stability": "stable",
