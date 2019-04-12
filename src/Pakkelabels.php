@@ -1,6 +1,7 @@
 <?php
 require_once('PakkelabelsException.php');
-class Pakkelabels {
+class Pakkelabels
+{
   const API_ENDPOINT = 'https://app.pakkelabels.dk/api/public/v3';
   const VERSION = '3.0';
 
