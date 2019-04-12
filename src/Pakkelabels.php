@@ -150,7 +150,7 @@ class Pakkelabels {
 
     // this function is called by curl for each header received
     curl_setopt($ch, CURLOPT_HEADERFUNCTION,
-      function($curl, $header) use (&$headers)
+      static function($curl, $header) use (&$headers)
       {
         $len = strlen($header);
         $header = explode(':', $header, 2);
