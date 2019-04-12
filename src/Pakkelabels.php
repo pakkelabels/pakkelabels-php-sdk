@@ -18,96 +18,115 @@ class Pakkelabels {
 
   public function account_balance(){
     $result = $this->_make_api_call('/account/balance');
+
     return $result;
   }
 
   public function account_payment_requests($params){
     $result = $this->_make_api_call('/account/payment_requests', 'GET', $params);
+
     return $result;
   }
 
   public function products($params){
     $result = $this->_make_api_call('/products', 'GET', $params);
+
     return $result;
   }
 
   public function pickup_points($params){
     $result = $this->_make_api_call('/pickup_points', 'GET', $params);
+
     return $result;
   }
 
   public function shipment_monitor_statuses($params){
     $result = $this->_make_api_call('/shipment_monitor_statuses', 'GET', $params);
+
     return $result;
   }  
 
   public function return_portals($params){
     $result = $this->_make_api_call('/return_portals', 'GET', $params);
+
     return $result;
   }  
   
   public function return_portal($id){
     $result = $this->_make_api_call('/return_portals/' . $id);
+
     return $result;
   }
 
   public function return_portal_shipments($return_portal_id, $params){
     $result = $this->_make_api_call('/return_portals/' . $return_portal_id . '/shipments');
+
     return $result;
   }
 
   public function shipments($params){
     $result = $this->_make_api_call('/shipments', 'GET', $params);
+
     return $result;
   }
 
   public function shipment($id){
     $result = $this->_make_api_call('/shipments/' . $id);
+
     return $result;
   }
 
   public function shipment_labels($id, $params){
     $result = $this->_make_api_call('/shipments/' . $id . '/labels', 'GET', $params);
+
     return $result;
   }
 
   public function create_shipment($params){
     $result = $this->_make_api_call('/shipments', 'POST', $params);
+
     return $result;
   }
 
   public function print_queue_entries($params){
     $result = $this->_make_api_call('/print_queue_entries', 'GET', $params);
+
     return $result;
   }  
 
   public function imported_shipments($params){
     $result = $this->_make_api_call('/imported_shipments', 'GET', $params);
+
     return $result;
   }
 
   public function imported_shipment($id){
     $result = $this->_make_api_call('/imported_shipments/' . $id);
+
     return $result;
   }
 
   public function create_imported_shipment($params){
     $result = $this->_make_api_call('/imported_shipments', 'POST', $params);
+
     return $result;
   }
 
   public function update_imported_shipment($id, $params){
     $result = $this->_make_api_call('/imported_shipments/'. $id, 'PUT', $params);
+
     return $result;
   }
 
   public function delete_imported_shipment($id){
     $result = $this->_make_api_call('/imported_shipments/'. $id, 'DELETE');
+
     return $result;
   }
 
   public function labels($params){
     $result = $this->_make_api_call('/labels/', 'GET', $params);
+
     return $result;
   }
   
@@ -165,6 +184,7 @@ class Pakkelabels {
           $headers[$name] = [trim($header[1])];
         else
           $headers[$name][] = trim($header[1]);
+
         return $len;
       }
     );
@@ -200,6 +220,7 @@ class Pakkelabels {
         return $pagination;
       }
     }
+
     return $pagination;
   }
 }
