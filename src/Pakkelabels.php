@@ -110,7 +110,7 @@ class Pakkelabels {
   
   private function _make_api_call($path, $method = 'GET',$params = array()){
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_USERPWD, $this->_api_user . ":" . $this->_api_key);
+    curl_setopt($ch, CURLOPT_USERPWD, $this->_api_user . ':' . $this->_api_key);
     $params['user_agent'] = 'pdk_php_library v' . self::VERSION;
 
     switch ($method) {
