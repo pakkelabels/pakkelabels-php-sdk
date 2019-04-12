@@ -125,7 +125,7 @@ class Pakkelabels {
       curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
       curl_setopt($ch, CURLOPT_HTTPHEADER, array(
           'Content-Type: application/json',
-          'Content-Length: ' . strlen($query))
+          'Content-Length: ' . strlen($query), )
       );
       break;
     case 'PUT':
@@ -135,7 +135,7 @@ class Pakkelabels {
       curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
       curl_setopt($ch, CURLOPT_HTTPHEADER, array(
           'Content-Type: application/json',
-          'Content-Length: ' . strlen($query))
+          'Content-Length: ' . strlen($query), )
       );
       break;
     case 'DELETE':
@@ -180,7 +180,7 @@ class Pakkelabels {
 
     $output = array(
         'output' => $output,
-        'pagination' => $pagination
+        'pagination' => $pagination,
     );
 
     return $output;
