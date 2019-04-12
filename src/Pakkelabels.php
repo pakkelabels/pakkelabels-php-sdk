@@ -179,8 +179,8 @@ class Pakkelabels {
     $pagination = $this->_extract_pagination($headers);
 
     $output = array(
-      'output' => $output,
-      'pagination' => $pagination
+        'output' => $output,
+        'pagination' => $pagination
     );
 
     return $output;
