@@ -2,9 +2,11 @@
 require_once('PakkelabelsException.php');
 class Pakkelabels {
   const API_ENDPOINT = 'https://app.pakkelabels.dk/api/public/v3';
+
   const VERSION = '3.0';
 
   private $_api_user;
+
   private $_api_key;
 
   public function __construct($api_user, $api_key, $api_base_path=self::API_ENDPOINT){
@@ -199,6 +201,5 @@ class Pakkelabels {
     }
     return $pagination;
   }
-
 }
 ?>
