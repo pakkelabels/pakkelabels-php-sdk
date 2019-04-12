@@ -5,4 +5,3 @@ class PakkelabelsException extends Exception
 		parent::__construct($message);
 	}
 }
-?>
