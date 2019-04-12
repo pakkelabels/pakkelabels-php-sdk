@@ -210,7 +210,6 @@ class Pakkelabels {
   }
 
   private function _extract_pagination($headers) {
-    
     $arr = array('x-per-page', 'x-current-page', 'x-total-count', 'x-total-pages');
     $pagination = array();
     foreach ($arr as &$key) {
