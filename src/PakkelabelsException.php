@@ -1,4 +1,5 @@
 <?php
+
 class PakkelabelsException extends Exception
 {
 	public function __construct($message){
