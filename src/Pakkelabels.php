@@ -94,12 +94,12 @@ class Pakkelabels {
   }
 
   public function update_imported_shipment($id, $params){
-    $result = $this->_make_api_call('/imported_shipments/'. $id, 'PUT', $params);
+    $result = $this->_make_api_call('/imported_shipments/' . $id, 'PUT', $params);
     return $result;
   }
 
   public function delete_imported_shipment($id){
-    $result = $this->_make_api_call('/imported_shipments/'. $id, 'DELETE');
+    $result = $this->_make_api_call('/imported_shipments/' . $id, 'DELETE');
     return $result;
   }
 
