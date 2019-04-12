@@ -167,7 +167,7 @@ class Pakkelabels {
     );
 
     $output = curl_exec($ch);
-    $http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE);
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $output = json_decode($output, true);
 
      curl_close($ch);
