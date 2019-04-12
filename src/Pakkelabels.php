@@ -108,7 +108,7 @@ class Pakkelabels {
     return $result;
   }
   
-  private function _make_api_call($path, $method = 'GET',$params = array()){
+  private function _make_api_call($path, $method = 'GET',$params = []){
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_USERPWD, $this->_api_user . ":" . $this->_api_key);
     $params['user_agent'] = 'pdk_php_library v' . self::VERSION;
@@ -123,9 +123,9 @@ class Pakkelabels {
       curl_setopt($ch, CURLOPT_URL, $this->_api_base_path . '/' . $path);
       curl_setopt($ch, CURLOPT_POST, 1);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-      curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      curl_setopt($ch, CURLOPT_HTTPHEADER, [
           'Content-Type: application/json',
-          'Content-Length: ' . strlen($query))
+          'Content-Length: ' . strlen($query)]
       );
       break;
     case 'PUT':
@@ -133,9 +133,9 @@ class Pakkelabels {
       curl_setopt($ch, CURLOPT_URL, $this->_api_base_path . '/' . $path);
       curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
       curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-      curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      curl_setopt($ch, CURLOPT_HTTPHEADER, [
           'Content-Type: application/json',
-          'Content-Length: ' . strlen($query))
+          'Content-Length: ' . strlen($query)]
       );
       break;
     case 'DELETE':
@@ -178,18 +178,18 @@ class Pakkelabels {
 
     $pagination = $this->_extract_pagination($headers);
 
-    $output = array(
+    $output = [
       'output' => $output,
       'pagination' => $pagination
-    );
+    ];
 
     return $output;
   }
 
   private function _extract_pagination($headers) {
     
-    $arr = array('x-per-page', 'x-current-page', 'x-total-count', 'x-total-pages');
-    $pagination = array();
+    $arr = ['x-per-page', 'x-current-page', 'x-total-count', 'x-total-pages'];
+    $pagination = [];
     foreach ($arr as &$key) {
       if (array_key_exists($key, $headers)) {
         $pagination[$key] = $headers[$key][0];
