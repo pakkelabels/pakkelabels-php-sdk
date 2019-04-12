@@ -42,7 +42,7 @@ class Pakkelabels {
     $result = $this->_make_api_call('/return_portals', 'GET', $params);
     return $result;
   }  
-  
+
   public function return_portal($id){
     $result = $this->_make_api_call('/return_portals/' . $id);
     return $result;
@@ -107,7 +107,7 @@ class Pakkelabels {
     $result = $this->_make_api_call('/labels/', 'GET', $params);
     return $result;
   }
-  
+
   private function _make_api_call($path, $method = 'GET',$params = array()){
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_USERPWD, $this->_api_user . ":" . $this->_api_key);
@@ -169,9 +169,9 @@ class Pakkelabels {
     $output = curl_exec($ch);
     $http_code = curl_getinfo( $ch, CURLINFO_HTTP_CODE);
     $output = json_decode($output, true);
-    
+
      curl_close($ch);
-    
+
     if ($http_code != 200){
     throw new PakkelabelsException($output['error']);
     }
@@ -187,7 +187,7 @@ class Pakkelabels {
   }
 
   private function _extract_pagination($headers) {
-    
+
     $arr = array('x-per-page', 'x-current-page', 'x-total-count', 'x-total-pages');
     $pagination = array();
     foreach ($arr as &$key) {
