@@ -26,7 +26,7 @@ Once the $client object is created, you can begin to use the API.
 #### Get current balance
 ```php5
 <?php
-  echo $client->account_balance();
+  print_r($client->account_balance());
 ?>
 ```
 #### Get outstanding payment requests
