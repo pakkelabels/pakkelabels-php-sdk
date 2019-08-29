@@ -1,4 +1,6 @@
-# Pakkelabels.dk's official PHP library
+# Pakkelabels.dk's official PHP library (DEPRECATED)
+
+**This library is deprecated. For any future updates please use [shipmondo_php_sdk](https://github.com/shipmondo/shipmondo_php_sdk).**
 
 This SDK supports Pakkelabels.dk API v3.
 
