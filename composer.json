@@ -1,6 +1,6 @@
 {
     "name": "pakkelabels/pakkelabels-php-sdk",
-    "description": "Pakkelabels.dk's official PHP library",
+    "description": "Pakkelabels.dk's official PHP library (DEPRECATED)",
     "type": "library",
     "minimum-stability": "stable",
     "license": "MIT",
